@@ -1,0 +1,180 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>BO7 Ashes Speedrun Overlay</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+margin:0;
+background:transparent;
+font-family:Arial, Helvetica, sans-serif;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.container{
+width:92vw;
+max-width:420px;
+background:rgba(0,0,0,.65);
+padding:16px;
+border-radius:14px;
+}
+
+.timer{
+font-size:28px;
+text-align:center;
+margin-bottom:10px;
+}
+
+.step{
+font-size:20px;
+margin-bottom:8px;
+}
+
+.tip{
+font-size:16px;
+opacity:.85;
+}
+
+.controls{
+margin-top:14px;
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+justify-content:center;
+}
+
+button{
+font-size:18px;
+padding:14px 20px;
+border:none;
+border-radius:12px;
+background:#1e1e1e;
+color:white;
+cursor:pointer;
+}
+
+button:active{
+background:#444;
+}
+
+.arrow{
+font-size:26px;
+width:72px;
+height:52px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="timer" id="timer">00:00.00</div>
+
+<div class="step" id="step"></div>
+<div class="tip" id="tip"></div>
+
+<div class="controls">
+<button onclick="prevStep()" class="arrow">⬅</button>
+<button onclick="nextStep()" class="arrow">➡</button>
+
+<button onclick="startTimer()">START</button>
+<button onclick="stopTimer()">STOP</button>
+
+<button onclick="prevTip()">TIP ◀</button>
+<button onclick="nextTip()">TIP ▶</button>
+</div>
+
+</div>
+
+<script>
+
+let steps=[
+{title:"Spawn & Rampage",tips:["Activate rampage inducer immediately","Knife zombies for fastest clear"]},
+{title:"Grab Watering Can",tips:["Melee machine right side","Save points early"]},
+{title:"Finish Round 2 Fast",tips:["Train near statue","Avoid nukes"]},
+{title:"Grab Tedd Head",tips:["Spawn near truck","Clear zombies first"]},
+{title:"Install Head",tips:["Place on Tessie","Prepare transport"]},
+{title:"Move To Blackwater Lake",tips:["Try to arrive round 4","Kill while moving"]},
+{title:"Water Flower",tips:["Use watering can","Flower near shed"]},
+{title:"Ashwood Pump",tips:["Clear zombies","Activate pump quickly"]},
+{title:"Upgrade Tessie",tips:["Pack‑a‑punch","Buy Double Tap"]},
+{title:"Prepare Wonder Weapon",tips:["Complete relic steps","Save a zombie"]}
+]
+
+let stepIndex=0
+let tipIndex=0
+
+function render(){
+document.getElementById("step").innerText=(stepIndex+1)+". "+steps[stepIndex].title
+document.getElementById("tip").innerText=steps[stepIndex].tips[tipIndex]
+}
+
+function nextStep(){
+stepIndex=Math.min(stepIndex+1,steps.length-1)
+tipIndex=0
+render()
+}
+
+function prevStep(){
+stepIndex=Math.max(stepIndex-1,0)
+tipIndex=0
+render()
+}
+
+function nextTip(){
+let tips=steps[stepIndex].tips
+tipIndex=(tipIndex+1)%tips.length
+render()
+}
+
+function prevTip(){
+let tips=steps[stepIndex].tips
+tipIndex=(tipIndex-1+tips.length)%tips.length
+render()
+}
+
+let timer
+let running=false
+let startTime
+
+function startTimer(){
+if(!running){
+running=true
+startTime=Date.now()
+timer=setInterval(()=>{
+let diff=Date.now()-startTime
+let m=Math.floor(diff/60000)
+let s=Math.floor((diff%60000)/1000)
+let ms=Math.floor((diff%1000)/10)
+document.getElementById("timer").innerText=`${m.toString().padStart(2,"0")}:${s.toString().padStart(2,"0")}.${ms.toString().padStart(2,"0")}`
+},10)
+}
+}
+
+function stopTimer(){
+running=false
+clearInterval(timer)
+}
+
+document.addEventListener("keydown",(e)=>{
+if(e.key==="ArrowRight") nextStep()
+if(e.key==="ArrowLeft") prevStep()
+if(e.key==="ArrowUp") startTimer()
+if(e.key==="ArrowDown") stopTimer()
+if(e.key==="]") nextTip()
+if(e.key==="[") prevTip()
+})
+
+render()
+</script>
+
+</body>
+</html>
