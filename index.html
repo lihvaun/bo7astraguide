@@ -1,180 +1,240 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>BO7 Ashes Speedrun Overlay</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Astra Malorum - BO4 Guide</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Roboto&display=swap" rel="stylesheet">
 
 <style>
-body{
-margin:0;
-background:transparent;
-font-family:Arial, Helvetica, sans-serif;
-color:white;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background: radial-gradient(circle at top, #1a1a1a, #050505);
+    color: #ddd;
 }
 
-.container{
-width:92vw;
-max-width:420px;
-background:rgba(0,0,0,.65);
-padding:16px;
-border-radius:14px;
+.container {
+    max-width: 950px;
+    margin: auto;
+    padding: 20px;
 }
 
-.timer{
-font-size:28px;
-text-align:center;
-margin-bottom:10px;
+h1 {
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    color: #9b5cff;
+    text-shadow: 0 0 12px #9b5cff88;
 }
 
-.step{
-font-size:20px;
-margin-bottom:8px;
+.section {
+    margin: 12px 0;
+    border: 1px solid #2a2a2a;
+    background: linear-gradient(145deg, #111, #0a0a0a);
+    box-shadow: inset 0 0 15px #000;
 }
 
-.tip{
-font-size:16px;
-opacity:.85;
+.section-header {
+    padding: 14px;
+    cursor: pointer;
+    font-family: 'Cinzel', serif;
+    background: linear-gradient(90deg, #1a1a1a, #111);
+    color: #9b5cff;
 }
 
-.controls{
-margin-top:14px;
-display:flex;
-flex-wrap:wrap;
-gap:10px;
-justify-content:center;
+.section-content {
+    display: none;
+    padding: 15px;
 }
 
-button{
-font-size:18px;
-padding:14px 20px;
-border:none;
-border-radius:12px;
-background:#1e1e1e;
-color:white;
-cursor:pointer;
+.step {
+    margin: 12px 0;
+    padding: 12px;
+    background: #0d0d0d;
+    border-left: 4px solid #9b5cff;
 }
 
-button:active{
-background:#444;
+.tip {
+    margin-top: 6px;
+    font-size: 13px;
+    color: #aaa;
 }
 
-.arrow{
-font-size:26px;
-width:72px;
-height:52px;
+.footer {
+    text-align: center;
+    margin-top: 20px;
+    opacity: 0.5;
 }
 </style>
+
+<script>
+function toggle(id){
+    let el = document.getElementById(id);
+    el.style.display = el.style.display === "block" ? "none" : "block";
+}
+</script>
+
 </head>
 
 <body>
 
 <div class="container">
 
-<div class="timer" id="timer">00:00.00</div>
+<h1>Astra Malorum</h1>
 
-<div class="step" id="step"></div>
-<div class="tip" id="tip"></div>
+<!-- SETUP -->
+<div class="section">
+<div class="section-header" onclick="toggle('s1')">I. INITIAL SETUP</div>
+<div id="s1" class="section-content">
 
-<div class="controls">
-<button onclick="prevStep()" class="arrow">⬅</button>
-<button onclick="nextStep()" class="arrow">➡</button>
+<div class="step">
+Turn On Power
+<div class="tip">Follow cables from spawn to generator rooms. Activate all switches.</div>
+</div>
 
-<button onclick="startTimer()">START</button>
-<button onclick="stopTimer()">STOP</button>
+<div class="step">
+Unlock Pack-a-Punch
+<div class="tip">Requires activating all power nodes across the map.</div>
+</div>
 
-<button onclick="prevTip()">TIP ◀</button>
-<button onclick="nextTip()">TIP ▶</button>
+<div class="step">
+Locate Star Fragments
+<div class="tip">Glowing purple shards found around the map (rooftops, ritual rooms, corridors).</div>
 </div>
 
 </div>
+</div>
 
-<script>
+<!-- ARTIFACT -->
+<div class="section">
+<div class="section-header" onclick="toggle('s2')">II. BUILD ASTRA DEVICE</div>
+<div id="s2" class="section-content">
 
-let steps=[
-{title:"Spawn & Rampage",tips:["Activate rampage inducer immediately","Knife zombies for fastest clear"]},
-{title:"Grab Watering Can",tips:["Melee machine right side","Save points early"]},
-{title:"Finish Round 2 Fast",tips:["Train near statue","Avoid nukes"]},
-{title:"Grab Tedd Head",tips:["Spawn near truck","Clear zombies first"]},
-{title:"Install Head",tips:["Place on Tessie","Prepare transport"]},
-{title:"Move To Blackwater Lake",tips:["Try to arrive round 4","Kill while moving"]},
-{title:"Water Flower",tips:["Use watering can","Flower near shed"]},
-{title:"Ashwood Pump",tips:["Clear zombies","Activate pump quickly"]},
-{title:"Upgrade Tessie",tips:["Pack‑a‑punch","Buy Double Tap"]},
-{title:"Prepare Wonder Weapon",tips:["Complete relic steps","Save a zombie"]}
-]
+<div class="step">
+Collect 3 Astra Components
+<div class="tip">Found in hidden rooms and dropped by special enemies.</div>
+</div>
 
-let stepIndex=0
-let tipIndex=0
+<div class="step">
+Assemble Device at Ritual Table
+<div class="tip">Central altar location. Interact to build.</div>
+</div>
 
-function render(){
-document.getElementById("step").innerText=(stepIndex+1)+". "+steps[stepIndex].title
-document.getElementById("tip").innerText=steps[stepIndex].tips[tipIndex]
-}
+<div class="step">
+Charge Device with Souls
+<div class="tip">Kill zombies near it until fully glowing purple.</div>
+</div>
 
-function nextStep(){
-stepIndex=Math.min(stepIndex+1,steps.length-1)
-tipIndex=0
-render()
-}
+</div>
+</div>
 
-function prevStep(){
-stepIndex=Math.max(stepIndex-1,0)
-tipIndex=0
-render()
-}
+<!-- SYMBOL -->
+<div class="section">
+<div class="section-header" onclick="toggle('s3')">III. SYMBOL PUZZLE</div>
+<div id="s3" class="section-content">
 
-function nextTip(){
-let tips=steps[stepIndex].tips
-tipIndex=(tipIndex+1)%tips.length
-render()
-}
+<div class="step">
+Find Wall Symbols
+<div class="tip">Look for glowing glyphs around the map.</div>
+</div>
 
-function prevTip(){
-let tips=steps[stepIndex].tips
-tipIndex=(tipIndex-1+tips.length)%tips.length
-render()
-}
+<div class="step">
+Match Symbols to Device
+<div class="tip">Input correct order based on symbols found.</div>
+</div>
 
-let timer
-let running=false
-let startTime
+<div class="step">
+Activate Sequence
+<div class="tip">Wrong order resets the puzzle.</div>
+</div>
 
-function startTimer(){
-if(!running){
-running=true
-startTime=Date.now()
-timer=setInterval(()=>{
-let diff=Date.now()-startTime
-let m=Math.floor(diff/60000)
-let s=Math.floor((diff%60000)/1000)
-let ms=Math.floor((diff%1000)/10)
-document.getElementById("timer").innerText=`${m.toString().padStart(2,"0")}:${s.toString().padStart(2,"0")}.${ms.toString().padStart(2,"0")}`
-},10)
-}
-}
+</div>
+</div>
 
-function stopTimer(){
-running=false
-clearInterval(timer)
-}
+<!-- TRIALS -->
+<div class="section">
+<div class="section-header" onclick="toggle('s4')">IV. TRIALS</div>
+<div id="s4" class="section-content">
 
-document.addEventListener("keydown",(e)=>{
-if(e.key==="ArrowRight") nextStep()
-if(e.key==="ArrowLeft") prevStep()
-if(e.key==="ArrowUp") startTimer()
-if(e.key==="ArrowDown") stopTimer()
-if(e.key==="]") nextTip()
-if(e.key==="[") prevTip()
-})
+<div class="step">
+Enter Trial Portal
+<div class="tip">Appears after puzzle completion.</div>
+</div>
 
-render()
-</script>
+<div class="step">
+Complete Combat Challenges
+<div class="tip">Examples: survive waves, melee kills, defend zones.</div>
+</div>
+
+<div class="step">
+Repeat for All Trials
+<div class="tip">Usually 3 total.</div>
+</div>
+
+</div>
+</div>
+
+<!-- ORBS -->
+<div class="section">
+<div class="section-header" onclick="toggle('s5')">V. ORB CHARGING</div>
+<div id="s5" class="section-content">
+
+<div class="step">
+Locate Floating Orbs
+<div class="tip">Purple energy spheres around map.</div>
+</div>
+
+<div class="step">
+Shoot with Wonder Weapon
+<div class="tip">Regular guns won’t work.</div>
+</div>
+
+<div class="step">
+Charge Each Orb
+<div class="tip">Kill zombies near orb until it explodes.</div>
+</div>
+
+</div>
+</div>
+
+<!-- FINAL -->
+<div class="section">
+<div class="section-header" onclick="toggle('s6')">VI. FINAL RITUAL</div>
+<div id="s6" class="section-content">
+
+<div class="step">
+Return to Ritual Table
+<div class="tip">Device should now be fully powered.</div>
+</div>
+
+<div class="step">
+Start Final Sequence
+<div class="tip">Triggers boss fight immediately.</div>
+</div>
+
+<div class="step">
+Boss Fight
+<div class="tip">
+Recommended:
+<br>- Pack-a-Punch Tier 3
+<br>- Wonder Weapon upgraded
+<br>- Full armor
+</div>
+</div>
+
+<div class="step">
+Defeat Boss → Complete EE
+<div class="tip">Avoid standing still — constant movement required.</div>
+</div>
+
+</div>
+</div>
+
+<div class="footer">
+Black Ops 4 Styled • Astra Malorum Easter Egg Guide
+</div>
+
+</div>
 
 </body>
 </html>
